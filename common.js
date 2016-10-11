@@ -96,10 +96,11 @@ class Creature {
         y2=this.pos.y+Math.sin(this.ang)*this.vRange;
 
         ctx.beginPath();
-        ctx.moveTo(this.pos.x, this.pos.y);
-        ctx.lineTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.lineTo(this.pos.x, this.pos.y);
+        ctx.moveTo(this.pos.x,this.pos.y);
+        ctx.lineTo(x1,y1);
+        ctx.moveTo(this.pos.x,this.pos.y);
+        ctx.lineTo(x2,y2);
+        ctx.arc(this.pos.x,this.pos.y,this.vRange,this.ang,this.ang+2*this.vAngle);
         ctx.stroke();
         ctx.closePath();
 
@@ -111,20 +112,26 @@ class Creature {
         ctx.beginPath();
         ctx.moveTo(this.pos.x,this.pos.y);
         ctx.lineTo(x1,y1);
+        ctx.moveTo(this.pos.x,this.pos.y);
         ctx.lineTo(x2,y2);
-        ctx.lineTo(this.pos.x,this.pos.y);
+        ctx.arc(this.pos.x,this.pos.y,this.vRange,this.ang-2*this.vAngle,this.ang);
         ctx.stroke();
         ctx.closePath();
 
+        var radius = Math.max((4 *this.size / 10) / renderScale,this.size);
+        
+        var c = Math.floor((this.fitness / minBirthFitness) * 255);
+        ctx.fillStyle='rgb('+c+','+c+','+c+')';
+        
         ctx.beginPath();
-        ctx.arc(this.pos.x,this.pos.y,this.size,this.ang,this.ang+2*Math.PI);
+        ctx.arc(this.pos.x,this.pos.y,radius,this.ang,this.ang+2*Math.PI);
         ctx.fill();
         ctx.stroke();
         ctx.closePath();
 
         ctx.fillStyle = 'rgb('+Math.floor(this.color.r)+','+Math.floor(this.color.g)+','+Math.floor(this.color.b)+')';
         ctx.beginPath();
-        ctx.arc(this.pos.x,this.pos.y,this.size*2/3,this.ang,this.ang+2*Math.PI);
+        ctx.arc(this.pos.x,this.pos.y,radius*2/3,this.ang,this.ang+2*Math.PI);
         ctx.fill();
         ctx.closePath();
 	}

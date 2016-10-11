@@ -73,9 +73,10 @@ function draw() {
 
 		sx /= sectorSize;
 		sy /= sectorSize;
+        var fullSector = ( sectorSize * sectorSize ) / ( 4 * 4 ) / 20;
 		for(var x = sx;x < Math.min(foodSector.length, sx + canvas.width / renderScale);x ++) {
 			for(var y = sy;y < Math.min(foodSector[x].length, sy + canvas.height / renderScale);y ++) {
-				var l = Math.floor((50 - foodSector[x][y].length) / 50 * 255);
+				var l = Math.floor((fullSector- foodSector[x][y].length) / fullSector * 255); // foodSize^2/sectorSize^2
 				ctx.fillStyle = 'rgb(' + 255 + ',' + l + ',' + l + ')';
 				ctx.fillRect(x * sectorSize, y * sectorSize, sectorSize, sectorSize);
 			}
@@ -103,7 +104,11 @@ function draw() {
 
 	ctx.fillStyle = 'lightgray';
     ctx.strokeStyle = 'black';
-    for(var i = 0;i < creatures.length;i ++) creatures[i].draw(ctx);
+    for(var i = 0;i < creatures.length;i ++){
+        if(i == creaturesSelected)  ctx.lineWidth = 10;
+        else    ctx.lineWidth = 1;
+        creatures[i].draw(ctx);
+    } 
 
 	ctx.restore();
 

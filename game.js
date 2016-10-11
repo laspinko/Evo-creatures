@@ -6,6 +6,7 @@ var creatures = [];
 
 const minAngle = Math.PI / 180 * 5;
 const minBirthFitness = 100;
+var breedRange = width / 10;
 
 var stepsPerCall = 2;
 var dataCollectionInterval = 1500;
@@ -17,7 +18,7 @@ var foodTarget = width * height / 8000;
 var food = [];
 var foodSector = [];
 var foodInBank = 0;
-var sectorSize = 200;
+var sectorSize = 100;
 
 var wheelDelta = 0;
 var mouseDown = false;
@@ -66,8 +67,12 @@ function oa(first,second,third) {
 }
 
 function dot_in(d, first, second, third) {
-    if(oa(d, first, second) <=0 && oa(d,second,third)<=0&& oa(d,third,first)<=0) return true;
-    if(oa(d, first, second) > 0 && oa(d,second,third)>0 && oa(d,third,first)>0) return true;
+    if(oa(d,first,second)<=0 && oa(d,first,third)>=0 && sub(d,first).dist2()<=sub(first,second).dist2()){
+        return true;
+    } 
+    //console.log(false);
+    //if(oa(d, first, second) <=0 && oa(d,second,third)<=0&& oa(d,third,first)<=0) return true;
+    //if(oa(d, first, second) > 0 && oa(d,second,third)>0 && oa(d,third,first)>0) return true;
     return false;
 }
 
@@ -242,30 +247,36 @@ function offspring(a, b){
 
 function checkForBirthAbility(creature) {
 	if(creature.fitness > minBirthFitness) {
-		lastBabiesStep = time;
 
 		var list = [];
 		for(var j in creatures) {
 			if(creatures[j] != creature && creatures[j].fitness > creature.fitness / 1.5) {
 				var dist = sub(creature.pos, creatures[j].pos).dist2();
-				if(dist < 500 * 500) list.push({dist: dist, idx: j});
+				if(dist < breedRange * breedRange) list.push({dist: dist, idx: j});
 			}
 		}
 		list.sort(function(c1, c2) { return creatures[c1.idx].fitness - creatures[c2.idx].fitness;});
 
-		console.log("Babies!", list);
+		//console.log("Babies!", list);
 
-		while(creature.fitness > 30) {
-			var chosen = creature;
-			if(list.length >= 1) {
-				chosen = creatures[list[Math.floor(Math.random() * list.length)].idx];
-			}
-			var kid = offspring(creature, chosen);
-			kid.pos.x = creature.pos.x;
-			kid.pos.y = creature.pos.y;
-			creatures.push(kid);
-			creature.fitness -= 10;
-		}
+        if(list.length > 3) {
+            lastBabiesStep = time;
+            while(creature.fitness > 30) {
+                //var chosen = creature;
+                chosen = creatures[list[Math.floor(Math.random() * list.length)].idx];
+                if(Math.random() > chosen.color.sub(creature.color).dist2() / 195075){ //3 * 255^2
+                    
+                }else{
+                    chosen = creature;
+                }
+                var kid = offspring(creature, chosen);
+                kid.pos.x = creature.pos.x;
+                kid.pos.y = creature.pos.y;
+                creatures.push(kid);
+                creature.fitness -= 10;
+            }
+            
+        }
 	}
 }
 
@@ -337,7 +348,7 @@ function step()
         }
         if(creatures.length > maxCrCount) maxCrCount = creatures.length;
 		fitnesData.push({avg: currentAvg, max: currentFitness, crCount: creatures.length});
-		console.log(currentAvg, creatures.length);
+		//console.log(currentAvg, creatures.length);
 	}
 
 	if(foodInBank > foodTarget / 100 * 5) { // lots of food undestributed
