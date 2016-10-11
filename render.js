@@ -109,7 +109,7 @@ function draw()
     ctx.fillStyle = 'green';
     ctx.clearRect(0, 0, 120, 70);
     ctx.fillText('Max avg: ' + Math.floor(maxAvg*100)/100, 0, 10);
-    ctx.fillText('Current fittnes: '+ Math.floor(current_max*100)/100, 0, 20);
+    ctx.fillText('Current fittnes: '+ Math.floor(currentFitness*100)/100, 0, 20);
     ctx.fillText('Current avg: ' + Math.floor(currentAvg*100)/100, 0, 30);
     ctx.fillText('Current creature count: ' + creatures.length, 0, 40);
 
@@ -119,7 +119,7 @@ function draw()
 	ctx.moveTo(0, canvas.height);
 	for(var i = 1;i < fitnesData.length;++ i)
 	{
-		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].max / max_fitness * 100));
+		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].max / maxFitness * 100));
 	}
 	ctx.moveTo(300, canvas.height);
 	ctx.closePath();
@@ -129,7 +129,7 @@ function draw()
 	ctx.moveTo(0, canvas.height);
 	for(var i = 1;i < fitnesData.length;++ i)
 	{
-		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].avg / max_fitness * 100));
+		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].avg / maxFitness * 100));
 	}
 	ctx.lineTo(300, canvas.height);
 	ctx.closePath();
@@ -145,12 +145,39 @@ function draw()
 	{
 		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].crCount / maxCrCount * 100));
 	}
-	ctx.lineTo(300, canvas.height);
-	ctx.closePath();
+	ctx.lineTo(300*(fitnesData.length-1)/fitnesData.length, canvas.height);
 
-	ctx.globalAlpha = 0.7;
+	ctx.globalAlpha = 0.3;
+	ctx.fillStyle = 'yellow';
+	ctx.fill();
+    
+	ctx.closePath();
+    
+	ctx.beginPath();
+	ctx.moveTo(0, canvas.height);
+	for(var i = 1;i < fitnesData.length;++ i)
+	{
+		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].avg / maxFitness * 100));
+	}
+	ctx.lineTo(300*(fitnesData.length-1)/fitnesData.length, canvas.height);
+
+	ctx.globalAlpha = 0.3;
+	ctx.fillStyle = 'red';
+	ctx.fill();
+	ctx.closePath();
+    
+	ctx.beginPath();
+	ctx.moveTo(0, canvas.height);
+	for(var i = 1;i < fitnesData.length;++ i)
+	{
+		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].max / maxFitness * 100));
+	}
+	ctx.lineTo(300*(fitnesData.length-1)/fitnesData.length, canvas.height);
+
+	ctx.globalAlpha = 0.3;
 	ctx.fillStyle = 'blue';
 	ctx.fill();
+	ctx.closePath();
 
 	ctx.globalAlpha = 1;
 

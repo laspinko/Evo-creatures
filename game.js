@@ -72,7 +72,7 @@ function dot_in(d, first, second, third) {
 }
 
 //stats
-var time = 0, max_fitness = 0, current_max = 0, maxAvg = 0, currentAvg = 0, generation=0;
+var time = 0, maxFitness = 0, currentFitness = 0, maxAvg = 0, currentAvg = 0, generation=0;
 var maxCrCount = 0;
 
 function getInputForCreature(creature) {
@@ -279,7 +279,7 @@ function step()
 		var outp = compute(creatures[i].neur, getInputForCreature(creatures[i]));
 		simulateMovement(creatures[i], outp);
 		checkForFoodColision(creatures[i]);
-
+        creatures[i].age ++;
         if(time % 1000 == 0) {
             creatures[i].fitness --;
 			if(creatures[i].fitness >= 0) {
@@ -292,16 +292,17 @@ function step()
 	}
 
 	currentAvg = 0;
-	current_max = 0;
+	currentFitness = 0;
+    var matureCreatures = 0;
 	for(var i in creatures) {
-		currentAvg += creatures[i].fitness;
-		if(current_max < creatures[i].fitness) current_max = creatures[i].fitness;
+        if(creatures[i].age>10000){ // survived the first test + to collect accurate info
+            matureCreatures ++;
+            currentAvg += creatures[i].fitness / creatures[i].age ;
+            if(currentFitness < creatures[i].fitness / creatures[i].age ) currentFitness = creatures[i].fitness / creatures[i].age;
+        }
 	}
-	currentAvg /= creatures.length;
+	currentAvg /= (matureCreatures==0?1:matureCreatures);
 
-	if(current_max > max_fitness) max_fitness = current_max;
-	if(currentAvg > maxAvg) maxAvg = currentAvg;
-	if(creatures.length > maxCrCount) maxCrCount = creatures.length;
 
 	if(time % 100 == 0) { // don't check every frame
         for(var i in creatures) {
@@ -328,7 +329,12 @@ function step()
 	}
 
 	if(time % dataCollectionInterval == 0) {
-		fitnesData.push({avg: currentAvg, max: current_max, crCount: creatures.length});
+        if(time>0){
+            if(currentFitness > maxFitness) maxFitness = currentFitness;
+            if(currentAvg > maxAvg) maxAvg = currentAvg;
+        }
+        if(creatures.length > maxCrCount) maxCrCount = creatures.length;
+		fitnesData.push({avg: currentAvg, max: currentFitness, crCount: creatures.length});
 		console.log(currentAvg, creatures.length);
 	}
 
