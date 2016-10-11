@@ -1,6 +1,6 @@
 var mousePos = new Vector(0, 0);
 
-window.addEventListener('mousedown', function (args) {
+canvas.addEventListener('mousedown', function (args) {
 	mouseDownPos.x = ((args.pageX));
 	mouseDownPos.y = ((args.pageY));
 
@@ -15,11 +15,11 @@ window.addEventListener('mousedown', function (args) {
 	mouseDown = true;
 }, false);
 
-window.addEventListener('mouseup', function (args) {
+canvas.addEventListener('mouseup', function (args) {
 	mouseDown = false;
 }, false);
 
-window.addEventListener('mousemove', function (args) {
+canvas.addEventListener('mousemove', function (args) {
 	if(mouseDown)
 	{
 		var curr = new Vector(args.pageX, args.pageY);
@@ -28,7 +28,7 @@ window.addEventListener('mousemove', function (args) {
 	}
 }, false);
 
-window.addEventListener('wheel', function (args) {
+canvas.addEventListener('wheel', function (args) {
 	if(args.deltaY > 0) wheelDelta -= 0.05;
 	else wheelDelta += 0.05;
 
