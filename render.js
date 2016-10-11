@@ -121,6 +121,7 @@ function draw()
 
 	if(creaturesSelected != -1) draw_net(creatures[creaturesSelected].neur);
 
+	/*
     ctx.fillStyle = 'green';
     ctx.clearRect(0, 0, 120, 70);
     ctx.fillText('Max avg: ' + Math.floor(maxAvg*100)/100, 0, 10);
@@ -154,6 +155,7 @@ function draw()
 	ctx.fill();
 	*/
     
+
 	ctx.beginPath();
 	ctx.moveTo(0, canvas.height);
 	for(var i = 1;i < fitnesData.length;++ i)
@@ -181,20 +183,6 @@ function draw()
 	ctx.fill();
 	ctx.closePath();
 
-	ctx.beginPath();
-	ctx.moveTo(0, canvas.height);
-	for(var i = 1;i < fitnesData.length;++ i)
-	{
-		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].crCount / maxCrCount * 100));
-	}
-	ctx.lineTo(300*(fitnesData.length-1)/fitnesData.length, canvas.height);
-
-	ctx.globalAlpha = 0.3;
-	ctx.fillStyle = 'yellow';
-	ctx.fill();
-    
-	ctx.closePath();
-    
 	ctx.globalAlpha = 1;
 
     requestAnimationFrame(draw);
