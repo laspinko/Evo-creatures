@@ -298,10 +298,12 @@ function step()
         if(creatures[i].age>10000){ // survived the first test + to collect accurate info
             matureCreatures ++;
             currentAvg += creatures[i].fitness / creatures[i].age ;
-            if(currentFitness < creatures[i].fitness / creatures[i].age ) currentFitness = creatures[i].fitness / creatures[i].age;
+            if(currentFitness < creatures[i].fitness / creatures[i].age ) {
+				currentFitness = creatures[i].fitness / creatures[i].age;
+			}
         }
 	}
-	currentAvg /= (matureCreatures==0?1:matureCreatures);
+	currentAvg /= (matureCreatures == 0 ? 1 : matureCreatures);
 
 
 	if(time % 100 == 0) { // don't check every frame
@@ -329,7 +331,7 @@ function step()
 	}
 
 	if(time % dataCollectionInterval == 0) {
-        if(time>0){
+        if(time > 0) {
             if(currentFitness > maxFitness) maxFitness = currentFitness;
             if(currentAvg > maxAvg) maxAvg = currentAvg;
         }
