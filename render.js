@@ -66,54 +66,56 @@ function draw()
 	renderScale = canvas.width / width * scaleMultiplier;
 	ctx.scale(renderScale, renderScale);
 
+    renderFoodHeatmap = renderScale < 0.1;
 	if(renderFoodHeatmap) {
 		ctx.fillStyle = 'lightgray';
 
 		var sx = Math.max(0, Math.floor(offset.x / renderScale / sectorSize) * sectorSize);
 		var sy = Math.max(0, Math.floor(offset.y / renderScale / sectorSize) * sectorSize);
 
-		for(var x = sx;x < sectorSize + sx + canvas.width / renderScale;x += sectorSize) {
+		/*for(var x = sx;x < sectorSize + sx + canvas.width / renderScale;x += sectorSize) {
 			ctx.fillRect(x, sy, 3, sectorSize + canvas.height / renderScale);
 		}
 		for(var y = sy;y < sectorSize + sy + canvas.height / renderScale;y += sectorSize) {
 			ctx.fillRect(sx, y, sectorSize + canvas.width / renderScale, 3);
-		}
+		}*/
 
 		sx /= sectorSize;
 		sy /= sectorSize;
 		for(var x = sx;x < Math.min(foodSector.length, sx + canvas.width / renderScale);x ++) {
 			for(var y = sy;y < Math.min(foodSector[x].length, sy + canvas.height / renderScale);y ++) {
 				var l = Math.floor((50 - foodSector[x][y].length) / 50 * 255);
-				ctx.fillStyle = 'rgb(' + l + ',' + l + ',' + l + ')';
+				ctx.fillStyle = 'rgb(' + 255 + ',' + l + ',' + l + ')';
 				ctx.fillRect(x * sectorSize, y * sectorSize, sectorSize, sectorSize);
 			}
 		}
-	}
+	}else{
+        ctx.fillStyle = 'red';
+        ctx.lineWidth = 0.5;
+
+        var div = new Vector(renderScale * sectorSize, renderScale * sectorSize);
+        var start = new Vector(Math.floor(offset.x / div.x), Math.floor(offset.y / div.y));
+
+        var end = new Vector(Math.floor(canvas.width / div.x), Math.floor(canvas.height / div.y));
+        end.add(start);
+
+        for(var x = Math.max(0, start.x);x <= Math.min(foodSector.length - 1, end.x + 1);x ++)
+        {
+            for(var y = Math.max(0, start.y);y <= Math.min(foodSector[x].length - 1, end.y + 1);y ++)
+            {
+                for(var i = 0;i < foodSector[x][y].length;i ++)
+                {
+                    if(renderScale > 1) arc(foodSector[x][y][i].x, foodSector[x][y][i].y, 2);
+                    else ctx.fillRect(foodSector[x][y][i].x - 2, foodSector[x][y][i].y - 2, 4, 4);
+                }
+            }
+        }
+    }
 
 	ctx.fillStyle = 'lightgray';
     ctx.strokeStyle = 'black';
     for(var i = 0;i < creatures.length;i ++) creatures[i].draw(ctx);
 
-    ctx.fillStyle = 'red';
-    ctx.lineWidth = 0.5;
-
-	var div = new Vector(renderScale * sectorSize, renderScale * sectorSize);
-	var start = new Vector(Math.floor(offset.x / div.x), Math.floor(offset.y / div.y));
-
-	var end = new Vector(Math.floor(canvas.width / div.x), Math.floor(canvas.height / div.y));
-	end.add(start);
-
-    for(var x = Math.max(0, start.x);x <= Math.min(foodSector.length - 1, end.x + 1);x ++)
-	{
-        for(var y = Math.max(0, start.y);y <= Math.min(foodSector[x].length - 1, end.y + 1);y ++)
-		{
-            for(var i = 0;i < foodSector[x][y].length;i ++)
-			{
-				if(renderScale > 1) arc(foodSector[x][y][i].x, foodSector[x][y][i].y, 2);
-				else ctx.fillRect(foodSector[x][y][i].x - 2, foodSector[x][y][i].y - 2, 4, 4);
-			}
-		}
-	}
 
 	ctx.restore();
 
@@ -126,7 +128,6 @@ function draw()
     ctx.fillText('Current avg: ' + Math.floor(currentAvg*100)/100, 0, 30);
     ctx.fillText('Current creature count: ' + creatures.length, 0, 40);
 
-<<<<<<< HEAD
 	/*
 	ctx.beginPath();
 	ctx.strokeStyle = 'blue';
@@ -153,7 +154,6 @@ function draw()
 	ctx.fill();
 	*/
     
-=======
 	ctx.beginPath();
 	ctx.moveTo(0, canvas.height);
 	for(var i = 1;i < fitnesData.length;++ i)
@@ -168,7 +168,6 @@ function draw()
 
 	ctx.closePath();
 
->>>>>>> origin/master
 	ctx.beginPath();
 	ctx.moveTo(0, canvas.height);
 	for(var i = 1;i < fitnesData.length;++ i)
@@ -182,7 +181,6 @@ function draw()
 	ctx.fill();
 	ctx.closePath();
 
-<<<<<<< HEAD
 	ctx.beginPath();
 	ctx.moveTo(0, canvas.height);
 	for(var i = 1;i < fitnesData.length;++ i)
@@ -197,8 +195,6 @@ function draw()
     
 	ctx.closePath();
     
-=======
->>>>>>> origin/master
 	ctx.globalAlpha = 1;
 
     requestAnimationFrame(draw);
