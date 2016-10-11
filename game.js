@@ -322,6 +322,7 @@ function step()
 			var b = Math.floor(Math.random() * (creatures.length / 10));
 			var kid = offspring(creatures[a], creatures[b]);
 			kid.fitness = Math.min(creatures[a].fitness, creatures[b].fitness);
+			foodInBank -= kid.fitness;
 			creatures.push(kid);
 		}
 	}
