@@ -138,6 +138,19 @@ function draw()
 	ctx.fillStyle = 'red';
 	ctx.fill();
 	*/
+    
+	ctx.beginPath();
+	ctx.moveTo(0, canvas.height);
+	for(var i = 1;i < fitnesData.length;++ i)
+	{
+		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].avg / maxAvg * 100));
+	}
+	ctx.lineTo(300*(fitnesData.length-1)/fitnesData.length, canvas.height);
+
+	ctx.globalAlpha = 0.3;
+	ctx.fillStyle = 'blue';
+	ctx.fill();
+	ctx.closePath();
 
 	ctx.beginPath();
 	ctx.moveTo(0, canvas.height);
@@ -153,32 +166,6 @@ function draw()
     
 	ctx.closePath();
     
-	ctx.beginPath();
-	ctx.moveTo(0, canvas.height);
-	for(var i = 1;i < fitnesData.length;++ i)
-	{
-		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].avg / maxFitness * 100));
-	}
-	ctx.lineTo(300*(fitnesData.length-1)/fitnesData.length, canvas.height);
-
-	ctx.globalAlpha = 0.3;
-	ctx.fillStyle = 'red';
-	ctx.fill();
-	ctx.closePath();
-    
-	ctx.beginPath();
-	ctx.moveTo(0, canvas.height);
-	for(var i = 1;i < fitnesData.length;++ i)
-	{
-		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].max / maxFitness * 100));
-	}
-	ctx.lineTo(300*(fitnesData.length-1)/fitnesData.length, canvas.height);
-
-	ctx.globalAlpha = 0.3;
-	ctx.fillStyle = 'blue';
-	ctx.fill();
-	ctx.closePath();
-
 	ctx.globalAlpha = 1;
 
     requestAnimationFrame(draw);
