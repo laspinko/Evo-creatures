@@ -54,8 +54,7 @@ function draw_net(a){
     }
     ctx.lineWidth=1;
 }
-function draw()
-{
+function draw() {
 	if(!toRender) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -66,19 +65,11 @@ function draw()
 	renderScale = canvas.width / width * scaleMultiplier;
 	ctx.scale(renderScale, renderScale);
 
-    renderFoodHeatmap = renderScale < 0.1;
 	if(renderFoodHeatmap) {
 		ctx.fillStyle = 'lightgray';
 
 		var sx = Math.max(0, Math.floor(offset.x / renderScale / sectorSize) * sectorSize);
 		var sy = Math.max(0, Math.floor(offset.y / renderScale / sectorSize) * sectorSize);
-
-		/*for(var x = sx;x < sectorSize + sx + canvas.width / renderScale;x += sectorSize) {
-			ctx.fillRect(x, sy, 3, sectorSize + canvas.height / renderScale);
-		}
-		for(var y = sy;y < sectorSize + sy + canvas.height / renderScale;y += sectorSize) {
-			ctx.fillRect(sx, y, sectorSize + canvas.width / renderScale, 3);
-		}*/
 
 		sx /= sectorSize;
 		sy /= sectorSize;
@@ -89,7 +80,8 @@ function draw()
 				ctx.fillRect(x * sectorSize, y * sectorSize, sectorSize, sectorSize);
 			}
 		}
-	}else{
+	}
+	if(renderScale > 0.1) {
         ctx.fillStyle = 'red';
         ctx.lineWidth = 0.5;
 
@@ -99,62 +91,23 @@ function draw()
         var end = new Vector(Math.floor(canvas.width / div.x), Math.floor(canvas.height / div.y));
         end.add(start);
 
-        for(var x = Math.max(0, start.x);x <= Math.min(foodSector.length - 1, end.x + 1);x ++)
-        {
-            for(var y = Math.max(0, start.y);y <= Math.min(foodSector[x].length - 1, end.y + 1);y ++)
-            {
-                for(var i = 0;i < foodSector[x][y].length;i ++)
-                {
+        for(var x = Math.max(0, start.x);x <= Math.min(foodSector.length - 1, end.x + 1);x ++) {
+            for(var y = Math.max(0, start.y);y <= Math.min(foodSector[x].length - 1, end.y + 1);y ++) {
+                for(var i = 0;i < foodSector[x][y].length;i ++) {
                     if(renderScale > 1) arc(foodSector[x][y][i].x, foodSector[x][y][i].y, 2);
                     else ctx.fillRect(foodSector[x][y][i].x - 2, foodSector[x][y][i].y - 2, 4, 4);
                 }
             }
         }
-    }
+	}
 
 	ctx.fillStyle = 'lightgray';
     ctx.strokeStyle = 'black';
     for(var i = 0;i < creatures.length;i ++) creatures[i].draw(ctx);
 
-
 	ctx.restore();
 
 	if(creaturesSelected != -1) draw_net(creatures[creaturesSelected].neur);
-
-	/*
-    ctx.fillStyle = 'green';
-    ctx.clearRect(0, 0, 120, 70);
-    ctx.fillText('Max avg: ' + Math.floor(maxAvg*100)/100, 0, 10);
-    ctx.fillText('Current fittnes: '+ Math.floor(currentFitness * 100) / 100, 0, 20);
-    ctx.fillText('Current avg: ' + Math.floor(currentAvg*100)/100, 0, 30);
-    ctx.fillText('Current creature count: ' + creatures.length, 0, 40);
-
-	/*
-	ctx.beginPath();
-	ctx.strokeStyle = 'blue';
-	ctx.moveTo(0, canvas.height);
-	for(var i = 1;i < fitnesData.length;++ i)
-	{
-		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].max / maxFitness * 100));
-	}
-	ctx.moveTo(300, canvas.height);
-	ctx.closePath();
-	ctx.stroke();
-
-	ctx.beginPath();
-	ctx.moveTo(0, canvas.height);
-	for(var i = 1;i < fitnesData.length;++ i)
-	{
-		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].avg / maxFitness * 100));
-	}
-	ctx.lineTo(300, canvas.height);
-	ctx.closePath();
-
-	ctx.globalAlpha = 0.4;
-	ctx.fillStyle = 'red';
-	ctx.fill();
-	*/
-    
 
 	ctx.beginPath();
 	ctx.moveTo(0, canvas.height);
