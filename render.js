@@ -128,6 +128,34 @@ function draw()
     ctx.fillText('Current creature count: ' + creatures.length, 0, 40);
 	*/
 
+<<<<<<< HEAD
+	/*
+	ctx.beginPath();
+	ctx.strokeStyle = 'blue';
+	ctx.moveTo(0, canvas.height);
+	for(var i = 1;i < fitnesData.length;++ i)
+	{
+		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].max / maxFitness * 100));
+	}
+	ctx.moveTo(300, canvas.height);
+	ctx.closePath();
+	ctx.stroke();
+
+	ctx.beginPath();
+	ctx.moveTo(0, canvas.height);
+	for(var i = 1;i < fitnesData.length;++ i)
+	{
+		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].avg / maxFitness * 100));
+	}
+	ctx.lineTo(300, canvas.height);
+	ctx.closePath();
+
+	ctx.globalAlpha = 0.4;
+	ctx.fillStyle = 'red';
+	ctx.fill();
+	*/
+    
+=======
 	ctx.beginPath();
 	ctx.moveTo(0, canvas.height);
 	for(var i = 1;i < fitnesData.length;++ i)
@@ -142,19 +170,37 @@ function draw()
 
 	ctx.closePath();
 
+>>>>>>> origin/master
 	ctx.beginPath();
 	ctx.moveTo(0, canvas.height);
 	for(var i = 1;i < fitnesData.length;++ i)
 	{
-		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].avg / maxFitness * 100));
+		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].avg / maxAvg * 100));
 	}
 	ctx.lineTo(300 * (fitnesData.length - 1) / fitnesData.length, canvas.height);
 
 	ctx.globalAlpha = 0.3;
-	ctx.fillStyle = 'red';
+	ctx.fillStyle = 'blue';
 	ctx.fill();
 	ctx.closePath();
 
+<<<<<<< HEAD
+	ctx.beginPath();
+	ctx.moveTo(0, canvas.height);
+	for(var i = 1;i < fitnesData.length;++ i)
+	{
+		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].crCount / maxCrCount * 100));
+	}
+	ctx.lineTo(300*(fitnesData.length-1)/fitnesData.length, canvas.height);
+
+	ctx.globalAlpha = 0.3;
+	ctx.fillStyle = 'yellow';
+	ctx.fill();
+    
+	ctx.closePath();
+    
+=======
+>>>>>>> origin/master
 	ctx.globalAlpha = 1;
 
     requestAnimationFrame(draw);
