@@ -119,12 +119,14 @@ function draw()
 
 	if(creaturesSelected != -1) draw_net(creatures[creaturesSelected].neur);
 
+	/*
     ctx.fillStyle = 'green';
     ctx.clearRect(0, 0, 120, 70);
     ctx.fillText('Max avg: ' + Math.floor(maxAvg*100)/100, 0, 10);
     ctx.fillText('Current fittnes: '+ Math.floor(currentFitness * 100) / 100, 0, 20);
     ctx.fillText('Current avg: ' + Math.floor(currentAvg*100)/100, 0, 30);
     ctx.fillText('Current creature count: ' + creatures.length, 0, 40);
+	*/
 
 	ctx.beginPath();
 	ctx.moveTo(0, canvas.height);

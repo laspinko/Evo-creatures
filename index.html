@@ -4,11 +4,22 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <canvas id="canvas-id" ></canvas>
+        <canvas id="canvas-id"></canvas>
+		<div id="panel">
+			<div id="status"></div>
+			<div id="controls">
+				<input type="checkbox" onclick="getInfoFromCP();" id="b_livePreview" checked>
+				<label for="b_livePreview">Live preview</label>
+				<br>
+				<input type="checkbox" onclick="getInfoFromCP();" id="b_foodHeatmap" checked>
+				<label for="b_livePreview">Show food heatmap</label>
+			</div>
+		</div>
     </body>
     <script src="common.js"></script>
     <script src="neu_net.js"></script>
     <script src="game.js"></script>
     <script src="render.js"></script>
     <script src="controls.js"></script>
+    <script src="gui.js"></script>
 </html>
