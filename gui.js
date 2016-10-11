@@ -30,3 +30,39 @@ function getInfoFromCP() {
 
 updateStatusPanel();
 setInterval(updateStatusPanel, 1000);
+
+var statCanvas = document.getElementById('statCanvas');
+var statCtx = statCanvas.getContext('2d');
+
+function drawStat() {
+    statCtx.clearRect(0, 0, statCanvas.width, statCanvas.height);
+	statCtx.beginPath();
+	statCtx.moveTo(0, statCanvas.height);
+	for(var i = 1;i < fitnesData.length;++ i)
+	{
+		statCtx.lineTo(i * statCanvas.width / (fitnesData.length-1), statCanvas.height - (fitnesData[i].crCount / maxCrCount * statCanvas.height));
+	}
+	statCtx.lineTo(statCanvas.width * (fitnesData.length ) / fitnesData.length, statCanvas.height);
+
+	statCtx.globalAlpha = 0.5;
+	statCtx.fillStyle = 'yellow';
+	statCtx.fill();
+
+	statCtx.closePath();
+
+	statCtx.beginPath();
+	statCtx.moveTo(0, statCanvas.height);
+	for(var i = 1;i < fitnesData.length;++ i)
+	{
+		statCtx.lineTo(i * statCanvas.width / (fitnesData.length-1), statCanvas.height - (fitnesData[i].avg / maxAvg * statCanvas.height));
+	}
+	statCtx.lineTo(statCanvas.width * (fitnesData.length ) / fitnesData.length, statCanvas.height);
+
+	statCtx.globalAlpha = 0.5;
+	statCtx.fillStyle = 'blue';
+	statCtx.fill();
+	statCtx.closePath();
+}
+
+drawStat();
+setInterval(drawStat, 1000/2);
