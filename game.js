@@ -1,5 +1,5 @@
-var width = 500 * 30;
-var height = 500 * 30;
+var width = 500 * 60;
+var height = 500 * 60;
 
 var fitnesData = [];
 var creatures = [];
@@ -257,16 +257,16 @@ function checkForBirthAbility(creature) {
 		}
 		list.sort(function(c1, c2) { return creatures[c1.idx].fitness - creatures[c2.idx].fitness;});
 
-		//console.log("Babies!", list);
 
-        if(list.length > 3) {
+        if(list.length > 1) {
+			console.log("Babies!", list);
             lastBabiesStep = time;
             while(creature.fitness > 30) {
                 //var chosen = creature;
                 chosen = creatures[list[Math.floor(Math.random() * list.length)].idx];
                 if(Math.random() > chosen.color.sub(creature.color).dist2() / 195075){ //3 * 255^2
-                    
-                }else{
+
+                }else {
                     chosen = creature;
                 }
                 var kid = offspring(creature, chosen);
@@ -275,7 +275,6 @@ function checkForBirthAbility(creature) {
                 creatures.push(kid);
                 creature.fitness -= 10;
             }
-            
         }
 	}
 }
