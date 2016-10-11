@@ -61,7 +61,7 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.save();
 
-	ctx.translate(-offset.x, -offset.y);
+	ctx.translate(offset.x, offset.y);
 
 	renderScale = scaleMultiplier;
 	ctx.scale(renderScale, renderScale);
@@ -69,8 +69,8 @@ function draw() {
 	if(renderFoodHeatmap) {
 		ctx.fillStyle = 'lightgray';
 
-		var sx = Math.max(0, Math.floor(offset.x / renderScale / sectorSize) * sectorSize);
-		var sy = Math.max(0, Math.floor(offset.y / renderScale / sectorSize) * sectorSize);
+		var sx = Math.max(0, Math.floor(-offset.x / renderScale / sectorSize) * sectorSize);
+		var sy = Math.max(0, Math.floor(-offset.y / renderScale / sectorSize) * sectorSize);
 
 		sx /= sectorSize;
 		sy /= sectorSize;
@@ -88,7 +88,7 @@ function draw() {
         ctx.lineWidth = 0.5;
 
         var div = new Vector(renderScale * sectorSize, renderScale * sectorSize);
-        var start = new Vector(Math.floor(offset.x / div.x), Math.floor(offset.y / div.y));
+        var start = new Vector(Math.floor(-offset.x / div.x), Math.floor(-offset.y / div.y));
 
         var end = new Vector(Math.floor(canvas.width / div.x), Math.floor(canvas.height / div.y));
         end.add(start);

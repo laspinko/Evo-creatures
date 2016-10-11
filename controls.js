@@ -1,34 +1,39 @@
 var mousePos = new Vector(0, 0);
 
-canvas.addEventListener('mousedown', function (args) {
-    mousePos = new Vector(args.pageX, args.pageY);
+document.addEventListener('mousedown', function (args) {
+    mousePos = new Vector(args.pageX-canvas.offsetLeft, args.pageY-canvas.offsetTop);
     
     
 	mouseDownPos.x = ((args.pageX));
 	mouseDownPos.y = ((args.pageY));
 
-    mousePos.x = ((args.pageX + offset.x) / renderScale);
-    mousePos.y = ((args.pageY + offset.y) / renderScale);
-	creaturesSelected = -1;
-	for(var i in creatures) {
-		if(sub(mousePos, creatures[i].pos).dist2() < 10 * 10) {
-			creaturesSelected = i;
-		}
-	}
 	mouseDown = true;
 }, false);
 
-canvas.addEventListener('mouseup', function (args) {
-    mousePos = new Vector(args.pageX, args.pageY);
+document.addEventListener('mouseup', function (args) {
+    mousePos = new Vector(args.pageX-canvas.offsetLeft, args.pageY-canvas.offsetTop);
 	mouseDown = false;
 }, false);
+document.addEventListener('click', function (args) {
+    mousePos = new Vector(args.pageX-canvas.offsetLeft, args.pageY-canvas.offsetTop);
+    
+	creaturesSelected = -1;
+	for(var i in creatures) {
+        var screenPos = add(mul(creatures[i].pos,scaleMultiplier),offset);
+        var radius = Math.max(4 * creatures[i].size / 10,creatures[i].size * scaleMultiplier);
+        //console.log(mul(creatures[i].pos,scaleMultiplier));
+		if(sub(mousePos, screenPos).dist2() < radius * radius) {
+			creaturesSelected = i;
+		}
+	}
+}, false);
 
-canvas.addEventListener('mousemove', function (args) {
-    mousePos = new Vector(args.pageX, args.pageY);
+document.addEventListener('mousemove', function (args) {
+    mousePos = new Vector(args.pageX-canvas.offsetLeft, args.pageY-canvas.offsetTop);
 	if(mouseDown)
 	{
 		var curr = new Vector(args.pageX, args.pageY);
-		offset.add(sub(mouseDownPos, curr));
+		offset.sub(sub(mouseDownPos, curr));
 		mouseDownPos = curr;
 	}
 }, false);
@@ -38,15 +43,11 @@ canvas.addEventListener('wheel', function (args) {
 	if(args.deltaY > 0) scaleMultiplier *=0.9;
 	else scaleMultiplier /= 0.9;
 
+    //fucking zoom
+    var fuck = sub(offset,mousePos);
+    fuck.mul(scaleMultiplier/oldScale);
+    offset = add(fuck,mousePos);
     
-    /*
-        ccx+=(cmx/width-0.5)*(oldz-cz)*2;
-        ccy+=(cmy/height-0.5)*(oldz-cz)*2;*/
-	//offset.add(mul(mousePos,(oldScale - scaleMultiplier)));
-    console.log(oldScale,mul(mousePos,1/oldScale));
-    offset = mul(sub(mul(mousePos,1/oldScale),offset),scaleMultiplier);
-    
-    //scaleMultiplier = oldScale;
     args.preventDefault();
 }, false);
 
