@@ -372,7 +372,8 @@ function update() {
 	if(diff > interval) {
 		console.log('Can\'t keep up! Please lower stepsPerCall');
 	}
-    setTimeout(update, 50);
+
+    setTimeout(update, interval);
 }
 
 update();
