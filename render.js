@@ -3,7 +3,7 @@ var requestAnimationFrame = window.requestAnimationFrame
 						 || window.webkitRequestAnimationFrame
 						 || window.msRequestAnimationFrame;
 
-var canvas = document.getElementById('canvas-id');
+var canvas = document.getElementById('mainCanvas');
 var ctx = canvas.getContext('2d');
 
 function resizeCanvas() {
@@ -53,42 +53,6 @@ function draw_net(a){
         }
     }
     ctx.lineWidth=1;
-}
-
-var statCanvas = document.createElement('canvas');
-statCanvas.width = 300;
-statCanvas.height = 300;
-var stat_ctx = statCanvas.getContext('2d');
-
-
-function drawStat(){
-    stat_ctx.clearRect(0,0,statCanvas.width,statCanvas.height);
-	stat_ctx.beginPath();
-	stat_ctx.moveTo(0, statCanvas.height);
-	for(var i = 1;i < fitnesData.length;++ i)
-	{
-		stat_ctx.lineTo(i * statCanvas.width / (fitnesData.length-1), statCanvas.height - (fitnesData[i].crCount / maxCrCount * statCanvas.height));
-	}
-	stat_ctx.lineTo(statCanvas.width * (fitnesData.length ) / fitnesData.length, statCanvas.height);
-
-	stat_ctx.globalAlpha = 0.5;
-	stat_ctx.fillStyle = 'yellow';
-	stat_ctx.fill();
-
-	stat_ctx.closePath();
-
-	stat_ctx.beginPath();
-	stat_ctx.moveTo(0, statCanvas.height);
-	for(var i = 1;i < fitnesData.length;++ i)
-	{
-		stat_ctx.lineTo(i * statCanvas.width / (fitnesData.length-1), statCanvas.height - (fitnesData[i].avg / maxAvg * statCanvas.height));
-	}
-	stat_ctx.lineTo(statCanvas.width * (fitnesData.length ) / fitnesData.length, statCanvas.height);
-
-	stat_ctx.globalAlpha = 0.5;
-	stat_ctx.fillStyle = 'blue';
-	stat_ctx.fill();
-	stat_ctx.closePath();
 }
 
 function draw() {
