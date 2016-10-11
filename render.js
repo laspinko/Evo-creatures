@@ -14,7 +14,7 @@ resizeCanvas();
 
 window.addEventListener('resize', resizeCanvas, false);
 
-var scaleMultiplier = 0.9;
+var scaleMultiplier = canvas.width / width;// ?
 var offset = new Vector(0, 0);
 var creaturesSelected = -1;
 
@@ -99,7 +99,7 @@ function draw() {
 
 	ctx.translate(-offset.x, -offset.y);
 
-	renderScale = canvas.width / width * scaleMultiplier;
+	renderScale = scaleMultiplier;
 	ctx.scale(renderScale, renderScale);
 
 	if(renderFoodHeatmap) {

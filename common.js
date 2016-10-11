@@ -34,6 +34,9 @@ function add(v1, v2) {
 function sub(v1, v2) {
 	return new Vector(v1.x - v2.x, v1.y - v2.y);
 }
+function mul(v1, num) {
+	return new Vector(v1.x * num, v1.y * num);
+}
 class Color {
 	constructor(r = Math.floor(Math.random()*255), g = Math.floor(Math.random()*255), b = Math.floor(Math.random()*255)) {
 		this.r = r;
