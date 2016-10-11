@@ -248,8 +248,10 @@ function checkForBirthAbility(creature) {
 	if(creature.fitness > minBirthFitness) {
 
 		var list = [];
+        sortCreatures();
+        var min=creatures[Math.floor(creatures.length/2)].fitnesss;
 		for(var j in creatures) {
-			if(creatures[j] != creature && creatures[j].fitness > creature.fitness / 1.5) {
+			if(creatures[j] != creature && creatures[j].fitness > min) {
 				var dist = sub(creature.pos, creatures[j].pos).dist2();
 				if(dist < breedRange * breedRange) list.push({dist: dist, idx: j});
 			}
