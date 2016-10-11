@@ -75,7 +75,7 @@ class Creature {
 
 		this.size = 10;
         this.color = new Color(Math.floor(Math.random()*255),Math.floor(Math.random()*255),Math.floor(Math.random()*255));
-        
+
         this.age = 1;
 	}
 

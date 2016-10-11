@@ -19,6 +19,7 @@ var offset = new Vector(0, 0);
 var creaturesSelected = -1;
 
 var toRender = true;
+var renderFoodHeatmap = true;
 
 ctx.lineWidth=1;
 function arc(x,y,r){
@@ -58,7 +59,6 @@ function draw()
 	if(!toRender) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle='black';
 	ctx.save();
 
 	ctx.translate(-offset.x, -offset.y);
@@ -66,18 +66,31 @@ function draw()
 	renderScale = canvas.width / width * scaleMultiplier;
 	ctx.scale(renderScale, renderScale);
 
-    ctx.fillStyle = 'lightgray';
-    
-	var sx = Math.floor(offset.x / renderScale / sectorSize) * sectorSize;
-	var sy = Math.floor(offset.y / renderScale / sectorSize) * sectorSize;
+	if(renderFoodHeatmap) {
+		ctx.fillStyle = 'lightgray';
 
-	for(var x = sx;x < sectorSize + sx + canvas.width / renderScale;x += sectorSize) {
-		ctx.fillRect(x, sy, 3, sectorSize + canvas.height / renderScale);
-	}
-	for(var y = sy;y < sectorSize + sy + canvas.height / renderScale;y += sectorSize) {
-		ctx.fillRect(sx, y, sectorSize + canvas.width / renderScale, 3);
+		var sx = Math.max(0, Math.floor(offset.x / renderScale / sectorSize) * sectorSize);
+		var sy = Math.max(0, Math.floor(offset.y / renderScale / sectorSize) * sectorSize);
+
+		for(var x = sx;x < sectorSize + sx + canvas.width / renderScale;x += sectorSize) {
+			ctx.fillRect(x, sy, 3, sectorSize + canvas.height / renderScale);
+		}
+		for(var y = sy;y < sectorSize + sy + canvas.height / renderScale;y += sectorSize) {
+			ctx.fillRect(sx, y, sectorSize + canvas.width / renderScale, 3);
+		}
+
+		sx /= sectorSize;
+		sy /= sectorSize;
+		for(var x = sx;x < Math.min(foodSector.length, sx + canvas.width / renderScale);x ++) {
+			for(var y = sy;y < Math.min(foodSector[x].length, sy + canvas.height / renderScale);y ++) {
+				var l = Math.floor((50 - foodSector[x][y].length) / 50 * 255);
+				ctx.fillStyle = 'rgb(' + l + ',' + l + ',' + l + ')';
+				ctx.fillRect(x * sectorSize, y * sectorSize, sectorSize, sectorSize);
+			}
+		}
 	}
 
+	ctx.fillStyle = 'lightgray';
     ctx.strokeStyle = 'black';
     for(var i = 0;i < creatures.length;i ++) creatures[i].draw(ctx);
 
@@ -109,10 +122,11 @@ function draw()
     ctx.fillStyle = 'green';
     ctx.clearRect(0, 0, 120, 70);
     ctx.fillText('Max avg: ' + Math.floor(maxAvg*100)/100, 0, 10);
-    ctx.fillText('Current fittnes: '+ Math.floor(currentFitness*100)/100, 0, 20);
+    ctx.fillText('Current fittnes: '+ Math.floor(currentFitness * 100) / 100, 0, 20);
     ctx.fillText('Current avg: ' + Math.floor(currentAvg*100)/100, 0, 30);
     ctx.fillText('Current creature count: ' + creatures.length, 0, 40);
 
+<<<<<<< HEAD
 	/*
 	ctx.beginPath();
 	ctx.strokeStyle = 'blue';
@@ -139,19 +153,36 @@ function draw()
 	ctx.fill();
 	*/
     
+=======
+	ctx.beginPath();
+	ctx.moveTo(0, canvas.height);
+	for(var i = 1;i < fitnesData.length;++ i)
+	{
+		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].crCount / maxCrCount * 100));
+	}
+	ctx.lineTo(300 * (fitnesData.length - 1) / fitnesData.length, canvas.height);
+
+	ctx.globalAlpha = 0.3;
+	ctx.fillStyle = 'yellow';
+	ctx.fill();
+
+	ctx.closePath();
+
+>>>>>>> origin/master
 	ctx.beginPath();
 	ctx.moveTo(0, canvas.height);
 	for(var i = 1;i < fitnesData.length;++ i)
 	{
 		ctx.lineTo(i * 300 / fitnesData.length, canvas.height - (fitnesData[i].avg / maxAvg * 100));
 	}
-	ctx.lineTo(300*(fitnesData.length-1)/fitnesData.length, canvas.height);
+	ctx.lineTo(300 * (fitnesData.length - 1) / fitnesData.length, canvas.height);
 
 	ctx.globalAlpha = 0.3;
 	ctx.fillStyle = 'blue';
 	ctx.fill();
 	ctx.closePath();
 
+<<<<<<< HEAD
 	ctx.beginPath();
 	ctx.moveTo(0, canvas.height);
 	for(var i = 1;i < fitnesData.length;++ i)
@@ -166,6 +197,8 @@ function draw()
     
 	ctx.closePath();
     
+=======
+>>>>>>> origin/master
 	ctx.globalAlpha = 1;
 
     requestAnimationFrame(draw);
