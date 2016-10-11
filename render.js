@@ -19,7 +19,7 @@ var offset = new Vector(0, 0);
 var creaturesSelected = -1;
 
 var toRender = true;
-var renderFoodHeatmap = true;
+var renderFoodHeatmap = false;
 
 ctx.lineWidth=1;
 function arc(x,y,r){

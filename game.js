@@ -272,7 +272,7 @@ function checkForBirthAbility(creature) {
                 kid.pos.x = creature.pos.x;
                 kid.pos.y = creature.pos.y;
                 creatures.push(kid);
-                creature.fitness -= 10;
+                creature.changeFitness(-10);
             }
         }
 	}
