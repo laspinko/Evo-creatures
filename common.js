@@ -84,9 +84,12 @@ class Creature {
     
     changeFitness(ch){
         this.fitness +=ch;
-		var nr = Math.sqrt(this.size * this.size + ch * ch)-this.size; // PI*r*r
-        this.size += ch>0?nr:-nr;
-		this.vRange += ch>0?nr:-nr;
+		var nr = Math.sqrt(this.size * this.size + ch* 1 * 1)-this.size; // PI*r*r
+        
+        this.size += nr;
+        if(this.size<0) this.size = 0;   
+		this.vRange += nr;
+        if(this.vRange<0) this.vRange = 0;
     }
 
 	draw(context)
