@@ -362,7 +362,16 @@ function step()
 }
 
 function update() {
+	var interval = 50;
+
+	var startTime = new Date();
 	for(var i = 0;i < stepsPerCall;++ i) step();
+	var endTime = new Date();
+
+	var diff = endTime - startTime;
+	if(diff > interval) {
+		console.log('Can\'t keep up! Please lower stepsPerCall');
+	}
     setTimeout(update, 50);
 }
 

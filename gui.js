@@ -21,6 +21,11 @@ function getInfoFromCP() {
 	if(curr != renderFoodHeatmap) {
 		renderFoodHeatmap = !renderFoodHeatmap;
 	}
+
+	curr = document.getElementById('r_simSpeed');
+	stepsPerCall = curr.value; // TODO treat value as percentage, not absolute value
+
+	updateStatusPanel();
 }
 
 updateStatusPanel();

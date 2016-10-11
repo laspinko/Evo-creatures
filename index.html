@@ -7,13 +7,21 @@
         <canvas id="canvas-id"></canvas>
 		<div id="panel">
 			<div id="status"></div>
-			<div id="controls">
-				<input type="checkbox" onclick="getInfoFromCP();" id="b_livePreview" checked>
+			<ul id="controls">
+			<li>
+				<input type="checkbox" onchange="getInfoFromCP();" id="b_livePreview" checked>
 				<label for="b_livePreview">Live preview</label>
-				<br>
-				<input type="checkbox" onclick="getInfoFromCP();" id="b_foodHeatmap" checked>
-				<label for="b_livePreview">Show food heatmap</label>
-			</div>
+			</li>
+			<li>
+				<input type="checkbox" onchange="getInfoFromCP();" id="b_foodHeatmap" checked>
+				<label for="b_foodHeatmap">Show food heatmap</label>
+			</li>
+			<br>
+			<li>
+				<center>Simulation speed</center>
+				<input type="range" onchange="getInfoFromCP();" value="3" min="0" max="100" step="1" id="r_simSpeed">
+			</li>
+			</ul>
 		</div>
     </body>
     <script src="common.js"></script>
