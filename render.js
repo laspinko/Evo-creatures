@@ -19,6 +19,7 @@ var offset = new Vector(0, 0);
 var creaturesSelected = -1;
 
 var toRender = true;
+var renderFoodHeatmap = true;
 
 ctx.lineWidth=1;
 function arc(x,y,r){
@@ -58,7 +59,6 @@ function draw()
 	if(!toRender) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle='black';
 	ctx.save();
 
 	ctx.translate(-offset.x, -offset.y);
@@ -66,18 +66,31 @@ function draw()
 	renderScale = canvas.width / width * scaleMultiplier;
 	ctx.scale(renderScale, renderScale);
 
-    ctx.fillStyle = 'lightgray';
-    
-	var sx = Math.floor(offset.x / renderScale / sectorSize) * sectorSize;
-	var sy = Math.floor(offset.y / renderScale / sectorSize) * sectorSize;
+	if(renderFoodHeatmap) {
+		ctx.fillStyle = 'lightgray';
 
-	for(var x = sx;x < sectorSize + sx + canvas.width / renderScale;x += sectorSize) {
-		ctx.fillRect(x, sy, 3, sectorSize + canvas.height / renderScale);
-	}
-	for(var y = sy;y < sectorSize + sy + canvas.height / renderScale;y += sectorSize) {
-		ctx.fillRect(sx, y, sectorSize + canvas.width / renderScale, 3);
+		var sx = Math.max(0, Math.floor(offset.x / renderScale / sectorSize) * sectorSize);
+		var sy = Math.max(0, Math.floor(offset.y / renderScale / sectorSize) * sectorSize);
+
+		for(var x = sx;x < sectorSize + sx + canvas.width / renderScale;x += sectorSize) {
+			ctx.fillRect(x, sy, 3, sectorSize + canvas.height / renderScale);
+		}
+		for(var y = sy;y < sectorSize + sy + canvas.height / renderScale;y += sectorSize) {
+			ctx.fillRect(sx, y, sectorSize + canvas.width / renderScale, 3);
+		}
+
+		sx /= sectorSize;
+		sy /= sectorSize;
+		for(var x = sx;x < Math.min(foodSector.length, sx + canvas.width / renderScale);x ++) {
+			for(var y = sy;y < Math.min(foodSector[x].length, sy + canvas.height / renderScale);y ++) {
+				var l = Math.floor((50 - foodSector[x][y].length) / 50 * 255);
+				ctx.fillStyle = 'rgb(' + l + ',' + l + ',' + l + ')';
+				ctx.fillRect(x * sectorSize, y * sectorSize, sectorSize, sectorSize);
+			}
+		}
 	}
 
+	ctx.fillStyle = 'lightgray';
     ctx.strokeStyle = 'black';
     for(var i = 0;i < creatures.length;i ++) creatures[i].draw(ctx);
 
