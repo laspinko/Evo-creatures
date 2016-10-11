@@ -2,8 +2,8 @@ var mousePos = new Vector(0, 0);
 
 canvas.addEventListener('mousedown', function (args) {
     mousePos = new Vector(args.pageX-canvas.offsetLeft, args.pageY-canvas.offsetTop);
-    
-    
+
+
 	mouseDownPos.x = ((args.pageX));
 	mouseDownPos.y = ((args.pageY));
 
@@ -16,7 +16,7 @@ canvas.addEventListener('mouseup', function (args) {
 }, false);
 canvas.addEventListener('click', function (args) {
     mousePos = new Vector(args.pageX-canvas.offsetLeft, args.pageY-canvas.offsetTop);
-    
+
 	creaturesSelected = -1;
 	for(var i in creatures) {
         var screenPos = add(mul(creatures[i].pos,scaleMultiplier),offset);
@@ -47,6 +47,6 @@ canvas.addEventListener('wheel', function (args) {
     var fuck = sub(offset,mousePos);
     fuck.mul(scaleMultiplier/oldScale);
     offset = add(fuck,mousePos);
-    
+
     args.preventDefault();
 }, false);

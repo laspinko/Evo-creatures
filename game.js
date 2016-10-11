@@ -1,5 +1,5 @@
-var width = 500 * 30;
-var height = 500 * 30;
+var width = 500 * 60;
+var height = 500 * 60;
 
 var fitnesData = [];
 var creatures = [];
@@ -149,6 +149,8 @@ function getInputForCreature(creature) {
 	return inp;
 }
 
+var bulletSteal = 5;
+
 function simulateMovement(creature, outp) {
 	if(Math.round(outp[0])==1) {
 		creature.pos.x += Math.cos(creature.ang) * 0.5;
@@ -179,8 +181,8 @@ function simulateMovement(creature, outp) {
 			for(var k=0;k<creatures.length;k++) {
 					if(i != k && sub(creature.bPos, creatures[k].pos).dist2() < creature.size * creature.size) {
 					if(creatures[k].fitness > 0) {
-						creatures[k].fitness --;
-						creature.fitness ++;
+                        creatures[k].changeFitness(-bulletSteal);
+                        creature.changeFitness(bulletSteal);
 					}
 					creature.bShot = false;
 					creature.bSTimer = 100;
@@ -201,10 +203,7 @@ function checkForFoodColision(creature) {
 				//console.log(x,y);
 			for(var j = 0;j <foodSector[x][y].length;j++){
 				if(sub(foodSector[x][y][j], creature.pos).dist2() < creature.size * creature.size) {
-					creature.fitness ++;
-					var nr = Math.sqrt(creature.size * creature.size + 1 * 1)-creature.size; // PI*r*r
-					creature.size += nr;
-					creature.vRange += nr;
+                    creature.changeFitness(1);
 					foodSector[x][y][j].x = foodSector[x][y][foodSector[x][y].length-1].x;
 					foodSector[x][y][j].y = foodSector[x][y][foodSector[x][y].length-1].y;
 					foodSector[x][y].pop();
@@ -257,16 +256,16 @@ function checkForBirthAbility(creature) {
 		}
 		list.sort(function(c1, c2) { return creatures[c1.idx].fitness - creatures[c2.idx].fitness;});
 
-		//console.log("Babies!", list);
 
-        if(list.length > 3) {
+        if(list.length > 1) {
+			console.log("Babies!", list);
             lastBabiesStep = time;
             while(creature.fitness > 30) {
                 //var chosen = creature;
                 chosen = creatures[list[Math.floor(Math.random() * list.length)].idx];
                 if(Math.random() > chosen.color.sub(creature.color).dist2() / 195075){ //3 * 255^2
-                    
-                }else{
+
+                }else {
                     chosen = creature;
                 }
                 var kid = offspring(creature, chosen);
@@ -275,7 +274,6 @@ function checkForBirthAbility(creature) {
                 creatures.push(kid);
                 creature.fitness -= 10;
             }
-            
         }
 	}
 }
@@ -292,7 +290,7 @@ function step()
 		checkForFoodColision(creatures[i]);
         creatures[i].age ++;
         if(time % 1000 == 0) {
-            creatures[i].fitness --;
+            creatures[i].changeFitness(-1);
 			if(creatures[i].fitness >= 0) {
 				foodInBank ++;
 			} else {

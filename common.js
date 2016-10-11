@@ -81,11 +81,18 @@ class Creature {
 
         this.age = 1;
 	}
+    
+    changeFitness(ch){
+        this.fitness +=ch;
+		var nr = Math.sqrt(this.size * this.size + ch * ch)-this.size; // PI*r*r
+        this.size += ch>0?nr:-nr;
+		this.vRange += ch>0?nr:-nr;
+    }
 
 	draw(context)
 	{
         var x1,y1,x2,y2;
-        var m = Math.floor((this.fitness-10)*(255/150));
+        var m = Math.floor((this.fitness)*(255/minBirthFitness));
         ctx.fillStyle='rgb('+m+','+m+','+m+')';
 
 
