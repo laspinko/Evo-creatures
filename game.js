@@ -5,7 +5,7 @@ var fitnesData = [];
 var creatures = [];
 
 const minAngle = Math.PI / 180 * 5;
-const minBirthFitness = 50;
+const minBirthFitness = 60;
 var breedRange = width / 10;
 
 var stepsPerCall = 2;
@@ -290,7 +290,7 @@ function step()
 		simulateMovement(creatures[i], outp);
 		checkForFoodColision(creatures[i]);
         creatures[i].age ++;
-        if(time % 1000 == 0) {
+        if(time % 750 == 0) {
             creatures[i].changeFitness(-1);
 			if(creatures[i].fitness >= 0) {
 				foodInBank ++;
@@ -330,7 +330,7 @@ function step()
 
 		sortCreatures();
 
-		for(var i = 0;i < 30;++ i) {
+		for(var i = 0;i < 10;++ i) {
 			var a = Math.floor(Math.random() * (creatures.length / 10));
 			var b = Math.floor(Math.random() * (creatures.length / 10));
 			var kid = offspring(creatures[a], creatures[b]);

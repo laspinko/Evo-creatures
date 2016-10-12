@@ -4,7 +4,7 @@ function updateStatusPanel() {
 	var html = '';
 	html += 'Creatures alive: ' + creatures.length + '<br>';
 	html += 'Simulation speed: ' + stepsPerCall + '<br>';
-	html += 'Average fitness: ' + Math.floor(currentAvg * 10) / 10 + '<br>';
+	html += 'Average fitness: ' + Math.floor(currentAvg * 10000) / 10000 + '<br>';
 	statusPanel.innerHTML = html;
 }
 
