@@ -84,12 +84,14 @@ class Creature {
     
     changeFitness(ch){
         this.fitness +=ch;
-		var nr = Math.sqrt(this.size * this.size + ch* 1 * 1)-this.size; // PI*r*r
         
-        this.size += nr;
-        if(this.size<0) this.size = 0;   
-		this.vRange += nr;
-        if(this.vRange<0) this.vRange = 0;
+    }
+    getSize(){
+        var a = Math.sqrt(10 * 10 + this.fitness * 1 * 1);
+        return Math.max(a,0);
+    }
+    getVRange(){
+        return this.baseVRange + this.getSize() - 10;
     }
 
 	draw(context)
@@ -103,35 +105,35 @@ class Creature {
             arc(this.bPos.x,this.bPos.y,2);
         }
 
-        x1=this.pos.x+Math.cos(this.ang+2*this.vAngle)*this.vRange;
-        y1=this.pos.y+Math.sin(this.ang+2*this.vAngle)*this.vRange;
-        x2=this.pos.x+Math.cos(this.ang)*this.vRange;
-        y2=this.pos.y+Math.sin(this.ang)*this.vRange;
+        x1=this.pos.x+Math.cos(this.ang+2*this.vAngle)*this.getVRange();
+        y1=this.pos.y+Math.sin(this.ang+2*this.vAngle)*this.getVRange();
+        x2=this.pos.x+Math.cos(this.ang)*this.getVRange();
+        y2=this.pos.y+Math.sin(this.ang)*this.getVRange();
 
         ctx.beginPath();
         ctx.moveTo(this.pos.x,this.pos.y);
         ctx.lineTo(x1,y1);
         ctx.moveTo(this.pos.x,this.pos.y);
         ctx.lineTo(x2,y2);
-        ctx.arc(this.pos.x,this.pos.y,this.vRange,this.ang,this.ang+2*this.vAngle);
+        ctx.arc(this.pos.x,this.pos.y,this.getVRange(),this.ang,this.ang+2*this.vAngle);
         ctx.stroke();
         ctx.closePath();
 
-        x1=this.pos.x+Math.cos(this.ang)*this.vRange;
-        y1=this.pos.y+Math.sin(this.ang)*this.vRange;
-        x2=this.pos.x+Math.cos(this.ang-2*this.vAngle)*this.vRange;
-        y2=this.pos.y+Math.sin(this.ang-2*this.vAngle)*this.vRange;
+        x1=this.pos.x+Math.cos(this.ang)*this.getVRange();
+        y1=this.pos.y+Math.sin(this.ang)*this.getVRange();
+        x2=this.pos.x+Math.cos(this.ang-2*this.vAngle)*this.getVRange();
+        y2=this.pos.y+Math.sin(this.ang-2*this.vAngle)*this.getVRange();
 
         ctx.beginPath();
         ctx.moveTo(this.pos.x,this.pos.y);
         ctx.lineTo(x1,y1);
         ctx.moveTo(this.pos.x,this.pos.y);
         ctx.lineTo(x2,y2);
-        ctx.arc(this.pos.x,this.pos.y,this.vRange,this.ang-2*this.vAngle,this.ang);
+        ctx.arc(this.pos.x,this.pos.y,this.getVRange(),this.ang-2*this.vAngle,this.ang);
         ctx.stroke();
         ctx.closePath();
 
-        var radius = Math.max((4 *this.size / 10) / renderScale,this.size);
+        var radius = Math.max((4 *this.getSize() / 10) / renderScale,this.getSize());
         
         var c = Math.floor((this.fitness / minBirthFitness) * 255);
         ctx.fillStyle='rgb('+c+','+c+','+c+')';

@@ -5,7 +5,7 @@ var fitnesData = [];
 var creatures = [];
 
 const minAngle = Math.PI / 180 * 5;
-const minBirthFitness = 100;
+const minBirthFitness = 50;
 var breedRange = width / 10;
 
 var stepsPerCall = 2;
@@ -83,16 +83,16 @@ var maxCrCount = 0;
 function getInputForCreature(creature) {
 	var inp = [];
 	var foodInView = false, bul = false, crea = false;
-	var first = new Vector(creature.pos.x + Math.cos(creature.ang + 2 * creature.vAngle) * creature.vRange
+	var first = new Vector(creature.pos.x + Math.cos(creature.ang + 2 * creature.vAngle) * creature.getVRange()
 						 , creature.pos.y + Math.sin(creature.ang + 2 * creature.vAngle) * creature. vRange);
-	var second = new Vector(creature.pos.x + Math.cos(creature.ang) * creature.vRange
-						 , creature.pos.y + Math.sin(creature.ang) * creature.vRange);
+	var second = new Vector(creature.pos.x + Math.cos(creature.ang) * creature.getVRange()
+						 , creature.pos.y + Math.sin(creature.ang) * creature.getVRange());
 
-	for(var x = Math.floor(((creature.pos.x - creature.vRange < 0)?(0):(creature.pos.x - creature.vRange)) / sectorSize);
-		x <= Math.floor(((creature.pos.x + creature.vRange > width-1)?(width-1):(creature.pos.x + creature.vRange)) / sectorSize) && !foodInView;
+	for(var x = Math.floor(((creature.pos.x - creature.getVRange() < 0)?(0):(creature.pos.x - creature.getVRange())) / sectorSize);
+		x <= Math.floor(((creature.pos.x + creature.getVRange() > width-1)?(width-1):(creature.pos.x + creature.getVRange())) / sectorSize) && !foodInView;
 		x++){
-		for(var y = Math.floor(((creature.pos.y - creature.vRange < 0)?(0):(creature.pos.y - creature.vRange)) / sectorSize);
-			y <= Math.floor(((creature.pos.y + creature.vRange > height-1)?(height-1):(creature.pos.y + creature.vRange)) / sectorSize) && !foodInView;
+		for(var y = Math.floor(((creature.pos.y - creature.getVRange() < 0)?(0):(creature.pos.y - creature.getVRange())) / sectorSize);
+			y <= Math.floor(((creature.pos.y + creature.getVRange() > height-1)?(height-1):(creature.pos.y + creature.getVRange())) / sectorSize) && !foodInView;
 			y++){
 			for(var k = 0;k <foodSector[x][y].length && !foodInView;k++){
 				if(dot_in(foodSector[x][y][k], creature.pos, first, second)) {
@@ -115,16 +115,16 @@ function getInputForCreature(creature) {
 	foodInView = false;
 	crea = false;
 	bul = false;
-	first = new Vector(creature.pos.x + Math.cos(creature.ang) * creature.vRange
-					, creature.pos.y + Math.sin(creature.ang) * creature.vRange);
-	second = new Vector(creature.pos.x + Math.cos(creature.ang - 2 * creature.vAngle) * creature.vRange
-					, creature.pos.y + Math.sin(creature.ang - 2 * creature.vAngle) * creature.vRange);
+	first = new Vector(creature.pos.x + Math.cos(creature.ang) * creature.getVRange()
+					, creature.pos.y + Math.sin(creature.ang) * creature.getVRange());
+	second = new Vector(creature.pos.x + Math.cos(creature.ang - 2 * creature.vAngle) * creature.getVRange()
+					, creature.pos.y + Math.sin(creature.ang - 2 * creature.vAngle) * creature.getVRange());
 
-	for(var x = Math.floor(((creature.pos.x - creature.vRange < 0)?(0):(creature.pos.x - creature.vRange)) / sectorSize);
-		x <= Math.floor(((creature.pos.x + creature.vRange > width-1)?(width-1):(creature.pos.x + creature.vRange)) / sectorSize) && !foodInView;
+	for(var x = Math.floor(((creature.pos.x - creature.getVRange() < 0)?(0):(creature.pos.x - creature.getVRange())) / sectorSize);
+		x <= Math.floor(((creature.pos.x + creature.getVRange() > width-1)?(width-1):(creature.pos.x + creature.getVRange())) / sectorSize) && !foodInView;
 		x++){
-		for(var y = Math.floor(((creature.pos.y - creature.vRange < 0)?(0):(creature.pos.y - creature.vRange)) / sectorSize);
-			y <= Math.floor(((creature.pos.y + creature.vRange > height-1)?(height-1):(creature.pos.y + creature.vRange)) / sectorSize) && !foodInView;
+		for(var y = Math.floor(((creature.pos.y - creature.getVRange() < 0)?(0):(creature.pos.y - creature.getVRange())) / sectorSize);
+			y <= Math.floor(((creature.pos.y + creature.getVRange() > height-1)?(height-1):(creature.pos.y + creature.getVRange())) / sectorSize) && !foodInView;
 			y++){
 			for(var k = 0;k <foodSector[x][y].length && !foodInView;k++){
 				if(dot_in(foodSector[x][y][k], creature.pos, first, second)) {
@@ -179,7 +179,7 @@ function simulateMovement(creature, outp) {
 			creature.bSTimer = 100;
 		} else {
 			for(var k=0;k<creatures.length;k++) {
-					if(i != k && sub(creature.bPos, creatures[k].pos).dist2() < creature.size * creature.size) {
+					if(i != k && sub(creature.bPos, creatures[k].pos).dist2() < creature.getSize() * creature.getSize()) {
 					if(creatures[k].fitness > 0) {
                         creatures[k].changeFitness(-bulletSteal);
                         creature.changeFitness(bulletSteal);
@@ -194,15 +194,15 @@ function simulateMovement(creature, outp) {
 }
 
 function checkForFoodColision(creature) {
-	for(var x = Math.floor(((creature.pos.x - creature.size < 0)?(0):(creature.pos.x - creature.size)) / sectorSize);
-		x <= Math.floor(((creature.pos.x + creature.size > width-1)?(width-1):(creature.pos.x + creature.size)) / sectorSize);
+	for(var x = Math.floor(((creature.pos.x - creature.getSize() < 0)?(0):(creature.pos.x - creature.getSize())) / sectorSize);
+		x <= Math.floor(((creature.pos.x + creature.getSize() > width-1)?(width-1):(creature.pos.x + creature.getSize())) / sectorSize);
 		x++){
-		for(var y = Math.floor(((creature.pos.y - creature.size < 0)?(0):(creature.pos.y - creature.size)) / sectorSize);
-			y <= Math.floor(((creature.pos.y + creature.size > height-1)?(height-1):(creature.pos.y + creature.size)) / sectorSize);
+		for(var y = Math.floor(((creature.pos.y - creature.getSize() < 0)?(0):(creature.pos.y - creature.getSize())) / sectorSize);
+			y <= Math.floor(((creature.pos.y + creature.getSize() > height-1)?(height-1):(creature.pos.y + creature.getSize())) / sectorSize);
 			y++){
 				//console.log(x,y);
 			for(var j = 0;j <foodSector[x][y].length;j++){
-				if(sub(foodSector[x][y][j], creature.pos).dist2() < creature.size * creature.size) {
+				if(sub(foodSector[x][y][j], creature.pos).dist2() < creature.getSize() * creature.getSize()) {
                     creature.changeFitness(1);
 					foodSector[x][y][j].x = foodSector[x][y][foodSector[x][y].length-1].x;
 					foodSector[x][y][j].y = foodSector[x][y][foodSector[x][y].length-1].y;
@@ -233,7 +233,6 @@ function offspring(a, b){
 	if(Math.random() < 0.15) result.baseVRange += Math.random()*100-50;
 	if(result.baseVRange > 300) result.baseVRange = 300;
 
-	result.vRange = result.baseVRange;
 
     var randColor = new Color();
     var black = new Color(0,0,0);
