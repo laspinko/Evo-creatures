@@ -248,7 +248,7 @@ function checkForBirthAbility(creature) {
 
 		var list = [];
         sortCreatures();
-        var min=creatures[Math.floor(creatures.length/2)].fitness;
+        var min=creatures[Math.floor(creatures.length*3/4)].fitness;
 		for(var j in creatures) {
 			if(creatures[j] != creature && creatures[j].fitness > min) {
 				var dist = sub(creature.pos, creatures[j].pos).dist2();
@@ -259,7 +259,7 @@ function checkForBirthAbility(creature) {
 
 
         if(list.length > 1) {
-			console.log("Babies!", list);
+			console.log("Babies!");
             lastBabiesStep = time;
             while(creature.fitness > 30) {
                 //var chosen = creature;

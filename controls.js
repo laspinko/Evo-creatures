@@ -17,13 +17,14 @@ canvas.addEventListener('mouseup', function (args) {
 canvas.addEventListener('click', function (args) {
     mousePos = new Vector(args.pageX-canvas.offsetLeft, args.pageY-canvas.offsetTop);
 
-	creaturesSelected = -1;
+	creaturesSelected = undefined;
 	for(var i in creatures) {
         var screenPos = add(mul(creatures[i].pos,scaleMultiplier),offset);
         var radius = Math.max(4 * creatures[i].size / 10,creatures[i].size * scaleMultiplier);
         //console.log(mul(creatures[i].pos,scaleMultiplier));
 		if(sub(mousePos, screenPos).dist2() < radius * radius) {
-			creaturesSelected = i;
+			creaturesSelected = creatures[i];
+            scaleMultiplier = 1;
 		}
 	}
 }, false);

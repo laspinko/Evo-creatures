@@ -16,7 +16,7 @@ window.addEventListener('resize', resizeCanvas, false);
 
 var scaleMultiplier = canvas.width / width;// ?
 var offset = new Vector(0, 0);
-var creaturesSelected = -1;
+var creaturesSelected = undefined;
 
 var toRender = true;
 var renderFoodHeatmap = false;
@@ -43,11 +43,14 @@ function draw_net(a){
     for(var i=0;i<a.layer.length;i++){
         for(var j=0;j<a.layer[i].length;j++){
             var m=Math.floor(255-a.layer[i][j].n*255);
+            ctx.strokeStyle = 'black';
             ctx.fillStyle='rgb('+m+','+m+','+m+')';
             ctx.lineWidth=1;
             arc(i*scx+canvas.width-300+scx/2,j*scy+scy/2,rad);
             for(var k=0;k<a.layer[i][j].w.length;k++){
-                ctx.lineWidth=(a.layer[i][j].w[k]+1)*1;
+                if(a.layer[i][j].w[k]>0)    ctx.strokeStyle = 'green';
+                else    ctx.strokeStyle = 'red';
+                ctx.lineWidth=(a.layer[i][j].w[k])*1;
                 line(i*scx+canvas.width-300+scx/2,j*scy+scy/2,(i+1)*scx+canvas.width-300+scx/2,k*scy+scy/2);
             }
         }
@@ -61,6 +64,10 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.save();
 
+    if(creaturesSelected != undefined){
+       offset = sub(new Vector(canvas.width/2,canvas.height/2),mul(creaturesSelected.pos , scaleMultiplier)); 
+    }  
+    
 	ctx.translate(offset.x, offset.y);
 
 	renderScale = scaleMultiplier;
@@ -106,14 +113,12 @@ function draw() {
 	ctx.fillStyle = 'lightgray';
     ctx.strokeStyle = 'black';
     for(var i = 0;i < creatures.length;i ++){
-        if(i == creaturesSelected)  ctx.lineWidth = 10;
-        else    ctx.lineWidth = 1;
         creatures[i].draw(ctx);
     } 
 
 	ctx.restore();
 
-	if(creaturesSelected != -1) draw_net(creatures[creaturesSelected].neur);
+	if(creaturesSelected != undefined) draw_net(creaturesSelected.neur);
 
 	ctx.globalAlpha = 1;
 
